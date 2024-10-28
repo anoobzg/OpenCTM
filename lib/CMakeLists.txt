@@ -63,7 +63,7 @@ if(BUILD_SHARED_LIBS)
 	)
 else()
 	add_library(openctmstatic STATIC $<TARGET_OBJECTS:liblzma> ${openctm_SOURCES})
-	target_compile_definitions(openctmstatic PUBLIC ${DEFINITIONS_CTM_STATIC})
+	target_compile_definitions(openctmstatic PUBLIC ${DEFINITIONS_CTM_STATIC} OPENCTM_STATIC)
 	target_compile_options(openctmstatic PUBLIC ${CFLAGS_CTM_STATIC})
 
 	install(TARGETS openctmstatic
