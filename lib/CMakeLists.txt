@@ -47,23 +47,31 @@ target_compile_options(liblzma PUBLIC ${CFLAGS_LZMA})
 
 include_directories(${liblzma_DIR})
 
-add_library(openctm SHARED $<TARGET_OBJECTS:liblzma> ${openctm_SOURCES})
-add_library(openctmstatic STATIC $<TARGET_OBJECTS:liblzma> ${openctm_SOURCES})
-target_compile_definitions(openctm PUBLIC ${DEFINITIONS_CTM})
-target_compile_definitions(openctmstatic PUBLIC ${DEFINITIONS_CTM_STATIC})
-target_compile_options(openctm PUBLIC ${CFLAGS_CTM})
-target_compile_options(openctmstatic PUBLIC ${CFLAGS_CTM_STATIC})
+if(BUILD_SHARED_LIBS)
+	add_library(openctm SHARED $<TARGET_OBJECTS:liblzma> ${openctm_SOURCES})
+	target_compile_definitions(openctm PUBLIC ${DEFINITIONS_CTM})
+	target_compile_options(openctm PUBLIC ${CFLAGS_CTM})
 
-if(NOT WIN32)
-	target_link_libraries(openctm m)
+	if(NOT WIN32)
+		target_link_libraries(openctm m)
+	endif()
+
+	install(TARGETS openctm
+		RUNTIME DESTINATION bin
+		LIBRARY DESTINATION lib
+		ARCHIVE DESTINATION lib
+	)
+else()
+	add_library(openctmstatic STATIC $<TARGET_OBJECTS:liblzma> ${openctm_SOURCES})
+	target_compile_definitions(openctmstatic PUBLIC ${DEFINITIONS_CTM_STATIC})
+	target_compile_options(openctmstatic PUBLIC ${CFLAGS_CTM_STATIC})
+
+	install(TARGETS openctmstatic
+		RUNTIME DESTINATION bin
+		LIBRARY DESTINATION lib
+		ARCHIVE DESTINATION lib
+	)
 endif()
-
-
-install(TARGETS openctm openctmstatic
-	RUNTIME DESTINATION bin
-	LIBRARY DESTINATION lib
-	ARCHIVE DESTINATION lib
-)
 
 install(FILES openctm.h openctmpp.h
 	DESTINATION include

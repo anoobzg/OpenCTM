@@ -6,10 +6,11 @@ INCLUDE_DIRECTORIES(lib/liblzma)
 INCLUDE_DIRECTORIES(tools/rply)
 INCLUDE_DIRECTORIES(tools/tinyxml)
 
-AUX_SOURCE_DIRECTORY(lib ctm)
-AUX_SOURCE_DIRECTORY(lib/liblzma lzma)
+add_subdirectory(lib)
 
 if(BUILD_TOOLS)
+	AUX_SOURCE_DIRECTORY(lib ctm)
+	AUX_SOURCE_DIRECTORY(lib/liblzma lzma)
 	AUX_SOURCE_DIRECTORY(tools/rply rply)
 	AUX_SOURCE_DIRECTORY(tools/tinyxml tinyxml)
 endif()
