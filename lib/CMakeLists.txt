@@ -71,6 +71,9 @@ else()
 		LIBRARY DESTINATION lib
 		ARCHIVE DESTINATION lib
 	)
+
+	add_executable(test test.cpp)
+	target_link_libraries(test openctmstatic)
 endif()
 
 install(FILES openctm.h openctmpp.h
